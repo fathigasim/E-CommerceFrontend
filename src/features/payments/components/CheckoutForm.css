@@ -1,0 +1,84 @@
+.checkout-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-details {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.payment-details h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #32325d;
+}
+
+.amount-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+}
+
+.amount-info strong {
+  color: #0570de;
+  font-size: 20px;
+}
+
+.payment-message {
+  margin: 16px 0;
+  padding: 12px;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.payment-message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.pay-button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #0570de;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.pay-button:hover:not(:disabled) {
+  background-color: #0058b8;
+}
+
+.pay-button:disabled {
+  background-color: #aab7c4;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner::before {
+  content: '⏳';
+  animation: spin 1s linear infinite;
+}

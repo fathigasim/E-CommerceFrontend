@@ -1,0 +1,92 @@
+.refund-form-container {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.refund-form-container h3 {
+  margin: 0 0 20px 0;
+  color: #32325d;
+}
+
+.refund-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #32325d;
+}
+
+.form-group input[type='radio'] {
+  cursor: pointer;
+}
+
+.amount-label {
+  margin-left: auto;
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.amount-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.amount-input:focus {
+  outline: none;
+  border-color: #0570de;
+}
+
+.form-group small {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.refund-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.refund-button:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.refund-button:disabled {
+  background-color: #aab7c4;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  text-align: center;
+  margin: 0;
+}

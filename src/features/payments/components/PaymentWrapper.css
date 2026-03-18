@@ -1,0 +1,150 @@
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Elements } from '@stripe/react-stripe-js';
+import { stripePromise } from '../../../utils/stripe';
+import CheckoutForm from './CheckoutForm';
+import {
+  createPaymentIntent,
+  selectClientSecret,
+  selectPaymentLoading,
+  selectPaymentError,
+  resetPaymentState,
+} from '../paymentsSlice';
+import './PaymentWrapper.css';
+import { toast } from 'react-toastify';
+
+const PaymentWrapper = ({ 
+  amount, 
+  currency = 'usd', 
+  customerEmail,
+  onSuccess 
+}) => {
+  const dispatch = useDispatch();
+  const clientSecret = useSelector(selectClientSecret);
+  const loading = useSelector(selectPaymentLoading);
+  const error = useSelector(selectPaymentError);
+  
+  // ✅ Track if payment intent was created
+  const [intentCreated, setIntentCreated] = useState(false);
+
+  // ✅ Create payment intent ONCE when component mounts
+  useEffect(() => {
+    if (!amount || amount <= 0) {
+      toast.error('Invalid payment amount');
+      return;
+    }
+
+    if (!customerEmail) {
+      toast.error('Customer email is required');
+      return;
+    }
+
+    // Only create if not already created
+    if (!intentCreated && !clientSecret) {
+      console.log('Creating payment intent...');
+      dispatch(createPaymentIntent({ 
+        amount, 
+        currency, 
+        customerEmail 
+      }));
+      setIntentCreated(true);
+    }
+
+    // Cleanup on unmount
+    return () => {
+      dispatch(resetPaymentState());
+    };
+  }, []);  // ✅ Empty dependency array - run ONCE only
+
+  // ✅ Handle errors
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  // ✅ Payment success handler
+  const handlePaymentSuccess = (paymentIntent) => {
+    console.log('Payment succeeded:', paymentIntent);
+    toast.success('Payment successful!');
+    
+    if (onSuccess) {
+      onSuccess(paymentIntent);
+    }
+  };
+
+  // ✅ Loading state
+  if (loading && !clientSecret) {
+    return (
+      <div className="payment-loading">
+        <div className="spinner-large"></div>
+        <p>Preparing payment form...</p>
+      </div>
+    );
+  }
+
+  // ✅ Error state
+  if (error && !clientSecret) {
+    return (
+      <div className="payment-error">
+        <p className="error-message">⚠️ {error}</p>
+        <button 
+          onClick={() => {
+            dispatch(resetPaymentState());
+            setIntentCreated(false);
+            dispatch(createPaymentIntent({ amount, currency, customerEmail }));
+            setIntentCreated(true);
+          }}
+          className="retry-button"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  // ✅ Wait for client secret
+  if (!clientSecret) {
+    return (
+      <div className="payment-loading">
+        <div className="spinner-large"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  // ✅ Stripe Elements options with clientSecret
+  const options = {
+    clientSecret,  // ✅ This is critical!
+    appearance: {
+      theme: 'stripe',
+      variables: {
+        colorPrimary: '#0570de',
+        colorBackground: '#ffffff',
+        colorText: '#30313d',
+        colorDanger: '#df1b41',
+        fontFamily: 'system-ui, sans-serif',
+        spacingUnit: '4px',
+        borderRadius: '4px',
+      },
+    },
+  };
+
+  console.log('Rendering Elements with clientSecret:', clientSecret);
+
+  return (
+    <div className="payment-wrapper">
+      {/* ✅ Key prop forces remount if clientSecret changes */}
+      <Elements stripe={stripePromise} options={options} key={clientSecret}>
+        <CheckoutForm
+          amount={amount}
+          currency={currency}
+          customerEmail={customerEmail}
+          onSuccess={handlePaymentSuccess}
+        />
+      </Elements>
+    </div>
+  );
+};
+
+export default PaymentWrapper;
