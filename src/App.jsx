@@ -15,7 +15,7 @@ import PaymentWrapper from './features/payments/components/PaymentWrapper';
 import PaymentStatus from './features/payments/components/PaymentStatus';
 import PaymentDetails from './features/payments/components/PaymentDetails';
 import RefundForm from './features/payments/components/RefundForm';
-
+import Payments from './features/payments/components/Payments'
 // Common Components
 import Navigation from './components/Navigation';
 import Orders from './features/order/components/Orders';
@@ -26,8 +26,10 @@ import Products from './features/product/components/products';
 import ProductList from './features/product/components/ProductList';
 import ProductEdit from './features/product/components/ProductEdit';
 import Basket from './features/Basket/components/Basket';
+import ServerError from './components/ServerError'
 import { ErrorBoundary } from 'react-error-boundary';
 import ProductManagement from './features/product/components/ProductManagement';
+import Forebidden from './components/Forebidden';
 
 function ErrorFallback({error, resetErrorBoundary}) {
   return (
@@ -79,7 +81,12 @@ const AppRoutes = () => {
           path="/register"
           element={isAuthenticated ? <Navigate to="/" /> : <RegisterForm />}
         />
-
+         <Route
+          path="/serverError"
+          element={<ServerError />}
+        />
+        
+        <Route path="/forbidden" element={<Forebidden/>} /> 
         {/* Protected Routes */}
         <Route
           path="/"
@@ -105,6 +112,14 @@ const AppRoutes = () => {
             </PrivateRoute>
           }
         />
+          <Route allowedRoles={["Admin,User"]}
+          path="/payments"
+          element={
+            <PrivateRoute>
+              <Payments />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/payment/success"
           element={
@@ -121,10 +136,10 @@ const AppRoutes = () => {
             </PrivateRoute>
           }
         />
-        <Route
+        <Route 
           path="/refund/:paymentId"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={["Admin"]}>
               <RefundPage />
             </PrivateRoute>
           }

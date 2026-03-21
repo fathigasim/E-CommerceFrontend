@@ -17,11 +17,12 @@ export const ProductCard = ({ product }) => {
   }
   return (
     <Card 
-      className="h-100 shadow-sm"
+      className="h-100 shadow-sm "
       style={{ 
         transition: "all 0.3s ease",
         cursor: "pointer"
       }}
+
     >
       <ProductImage
         imageUrl={product?.imageUrl}

@@ -32,24 +32,22 @@ const Basket = () => {
   
      const RemoveItemFromBasket = async({productId,quantity})=>{
            try{
-            await dispatch(removeFromBasket({productId,quantity}))
+            await dispatch(removeFromBasket({productId,quantity})).unwrap();
   await dispatch(fetchBasket()).unwrap(); 
            }
         catch(err){
           console.log(err)
         }
      }
-    useEffect(()=>{
-      const fetchData = async () => {
-        try {
-          await dispatch(fetchBasket()).unwrap();
-        }
-      catch(err){
-        console.log(err || "Failed to fetch basket items");  
-      }
-      };
-      fetchData();
-    },[dispatch])
+   useEffect(() => {
+        const controller = new AbortController();
+
+        dispatch(fetchBasket());
+
+        return () => {
+            controller.abort(); // cleanup on unmount
+        };
+    }, [dispatch]);
 
 
 
@@ -59,7 +57,9 @@ const Basket = () => {
     if(error){
         return <div>{error}</div>
     }
-   
+     if (!items || items.length === 0) {
+        return null; // or a subtle "basket empty" message
+    }
   return (
     <>
     
@@ -67,7 +67,12 @@ const Basket = () => {
     {items.length !==0 && 
     <>
      
-    <Contrainer className='border rounded p-3 mt-3' style={{boxShadow:"5px 5px 10px rgba(0,0,0,0.5)"}}>
+    <Contrainer   className='border rounded p-3 mt-3'
+                        style={{
+                            boxShadow: "5px 5px 10px rgba(0,0,0,0.5)",
+                            opacity: loading ? 0.6 : 1,        // ✅ Subtle loading indicator
+                            pointerEvents: loading ? 'none' : 'auto' // ✅ Disable interactions while loading
+                        }}>
       <Row>
         <Col md={8} sm={12} style={{margin:'auto'}}> 
     {/* style={{display:'flex',flexDirection:'column', maxWidth:"400px",margin:"auto",boxShadow:"5px 5px 10px rgba(0,0,0,0.5)",borderRadius:'1rem',padding:'3px'}}  */}
@@ -78,8 +83,9 @@ const Basket = () => {
       <table className='table table-borderless text-center' style={{justifyContent:'center'}}>
         <thead><th>Image</th><th>Name</th><th>Price</th><th>Quantity</th><th></th></thead>
         <tbody>
-      {items.map((basket)=>(
-     
+      {items.map((basket)=>{
+      console.log('Basket item:', basket);
+      return(
          <tr key={basket.productId}>
         <td ><img src={basket.image} style={{width:'50px',height:'50px'}} className='img img-thumbnail' alt='default.png'/> </td><td>{basket.productName}</td><td>{basket.price}</td>
         <td>{basket.quantity}</td><td>
@@ -87,8 +93,8 @@ const Basket = () => {
               RemoveItemFromBasket({productId:basket.productId,quantity:1})}
               }><span><MdDeleteForever /> remove</span></button></td>
       </tr>
-      
-      ))
+      )
+})
       }
          </tbody>
       </table>

@@ -7,25 +7,31 @@ import {
   selectProductData, 
   // selectProductTotalCount,
   selectProductPageSize,
-  //selectProductTotalPages,
+  selectProductTotalPages,
   selectProductError, 
   selectProductLoading 
 } from '../productSlice';
 import ProductCard from './ProductCard';
 import { Alert, Spinner, Row, Col, Container } from "react-bootstrap";
 import Paginationbootstrap from '../../../components/Pagination';
+import Basket from '../../Basket/components/Basket';
+//import {selectBasketLoading,selectBasketError,selectBasketData} from '../../basket/basketSlice'
 const Products = () => {
   const dispatch = useDispatch();
   //const totalCount = useSelector(selectProductTotalCount);
-  const pageSize = useSelector(selectProductPageSize);
-  //const totalPages = useSelector(selectProductTotalPages);
+  //const pageSize = useSelector(selectProductPageSize);
+  const totalPages = useSelector(selectProductTotalPages);
   const products = useSelector(selectProductData);
   const loading = useSelector(selectProductLoading); //  Fixed!
   const error = useSelector(selectProductError); //  Added!
+
+    //  const loadingBasket = useSelector(selectBasketLoading)
+    //    const  itemsBasket  = useSelector(selectBasketData);
+    //    const errorBasket=useSelector(selectBasketError);
   const [searchParams,setSearchParams] = useSearchParams();
   
   const currentPage = Number(searchParams.get("pageNumber")) || 1;
-  const pSize = Number(searchParams.get("pageSize")) || 2;
+  const pSize = Number(searchParams.get("pageSize")) ||8;
 
   useEffect(() => {
     dispatch(fetchAllProducts({  pageNumber: currentPage,pageSize: pSize }));
@@ -69,10 +75,24 @@ const Products = () => {
 
   return (
     <>
-    <Container fluid className="py-4"> {/* ✅ Changed fluid="md" to fluid */}
-      <Row className="g-4"> {/* ✅ Row with gap */}
+  
+           <Container fluid className="py-4 px-4 mb-5" >
+            <Row className='justify-content-center'>
+              <Col md={8} >
+      <Basket/>
+      </Col>
+      </Row>
+      </Container>
+    
+  
+    
+   
+    
+         
+    <Container fluid > {/* Changed fluid="md" to fluid */}
+      <Row className="g-4 ">   {/* Row with gap */}
         {products.map((product) => (
-          <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
+          <Col className='px-2 py-2' style={{margin:'auto'}} key={product.id} xs={12} sm={6} md={4} lg={3}>
             <ProductCard product={product} />
           </Col>
         ))}
@@ -85,7 +105,7 @@ const Products = () => {
         <Container fluid="md" className="mt-4 d-flex justify-content-center">
           <Paginationbootstrap
             page={currentPage}
-            totalPages={pageSize}
+            totalPages={totalPages}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
           />

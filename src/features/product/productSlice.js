@@ -22,7 +22,7 @@ export const fetchAllProducts = createAsyncThunk(
 
     try {
       console.log('Fetching Products');
-      const result = await productApi.fetchProduct({pageNumber,pageSize:3});
+      const result = await productApi.fetchProduct({pageNumber,pageSize});
       console.log('Products Data :', result);
       return result;
     } catch (error) {
@@ -192,7 +192,7 @@ const productSlice = createSlice({
         state.items = action.payload.data.items;
         state.pageNumber=action.payload.data.pageNumber
         state.pageSize=action.payload.data.pageSize
-         state.totalPages=action.payload.data.totalpages
+         state.totalPages=action.payload.data.totalPages
         state.totalCount=action.payload.data.totalCount
         console.log('Products data:', state.items);
       })

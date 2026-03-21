@@ -11,8 +11,8 @@ export const tokenService = {
   
   // Set tokens
   setTokens: (accessToken, refreshToken) => {
-    localStorage.setItem(TOKEN_KEY, accessToken);
-    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    if (accessToken) localStorage.setItem(TOKEN_KEY, accessToken);
+    if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
   },
   
   // Clear tokens
@@ -58,15 +58,84 @@ export const tokenService = {
     }
   },
   
-  // Get user ID from token
+  // ✅ FIXED: Get user ID from token (handles .NET ClaimTypes)
   getUserIdFromToken: (token) => {
     if (!token) return null;
     
     try {
       const decoded = jwtDecode(token);
-      return decoded.sub || decoded.nameid || decoded.userId;
+      
+      console.log('🔍 Decoded token:', decoded); // Debug
+      
+      // ✅ Try different claim names (.NET uses long URL format)
+      return (
+        decoded.sub || 
+        decoded.nameid || 
+        decoded.userId ||
+        decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] || //  .NET NameIdentifier
+        decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata'] ||
+        null
+      );
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      return null;
+    }
+  },
+  
+  // ✅ BONUS: Get email from token
+  getEmailFromToken: (token) => {
+    if (!token) return null;
+    
+    try {
+      const decoded = jwtDecode(token);
+      return (
+        decoded.email ||
+        decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ||
+        null
+      );
     } catch (error) {
       return null;
     }
+  },
+  
+  // ✅ BONUS: Get username from token
+  getUserNameFromToken: (token) => {
+    if (!token) return null;
+    
+    try {
+      const decoded = jwtDecode(token);
+      return (
+        decoded.name ||
+        decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ||
+        null
+      );
+    } catch (error) {
+      return null;
+    }
+  },
+
+  getUserRoles(token) {
+  try {
+    const decoded = jwtDecode(token);
+    
+    // Check for ASP.NET Core Identity role claim format
+    const aspNetRoles = decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+    
+    if (aspNetRoles) {
+      // Role claim can be a string or array
+      return Array.isArray(aspNetRoles) ? aspNetRoles : [aspNetRoles];
+    }
+    
+    // Fallback to simple 'role' claim
+    const simpleRoles = decoded.role;
+    if (simpleRoles) {
+      return Array.isArray(simpleRoles) ? simpleRoles : [simpleRoles];
+    }
+    
+    return [];
+  } catch (error) {
+    console.error('Error extracting roles from token:', error);
+    return [];
   }
+}
 };

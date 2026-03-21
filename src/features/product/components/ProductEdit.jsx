@@ -3,6 +3,7 @@ import {useEffect,useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductById,selectProductLoading,selectProductItem,updateProduct,clearError} from '../productSlice';
 import { Container, Spinner, Alert,Form,Button,FormGroup,Col,Row,FormControl} from 'react-bootstrap';
+import { getCategory, selectCategoryData } from '../../category/categorySlice';
 import { toast } from 'react-toastify';
 export const ProductEdit = () => {
           const {Id}=useParams()
@@ -11,12 +12,13 @@ export const ProductEdit = () => {
      
           const loading = useSelector(selectProductLoading);
           const product = useSelector(selectProductItem);
+          const categories=useSelector(selectCategoryData)
           const [id, setId] = useState("");
 const [name, setName] = useState("");
 const [description, setDescription] = useState("");
 const [price, setPrice] = useState("");
 const [stockQuantity, setStockQuantity] = useState("");
-const [categoryId, setCategoryId] = useState("11111111-1111-1111-1111-111111111111");
+const [categoryId, setCategoryId] = useState([]);
 const [image, setImage] = useState(null);
    const [formErrors, setFormErrors] = useState({});
 useEffect(() => {
@@ -30,6 +32,19 @@ useEffect(() => {
     fetchProductId();
 }, [dispatch, Id]);
 
+  useEffect(()=>{
+
+        const getCategories=async ()=>{
+          try{
+          await dispatch(getCategory().unwrap())
+          }
+          catch(err){
+                console.log(err)
+          }
+        };
+     getCategories();
+  },[dispatch])
+
 useEffect(() => {
     if (product) {
         console.log('Product data in ProductEdit:', product);
@@ -38,7 +53,7 @@ useEffect(() => {
         setDescription(product.description || "");
         setPrice(product.price || "");
         setStockQuantity(product.stockQuantity || "");
-        setCategoryId(product.categoryId || "11111111-1111-1111-1111-111111111111");
+        setCategoryId(product.categoryId || "");
         setImage(null); // Reset image to null when product changes
     }
 // Only run this effect when product.id changes to avoid cascading renders
@@ -222,7 +237,26 @@ const handleSubmit = async (e) => {
                                   {formErrors.stock}
                                 </Form.Control.Feedback>
               </FormGroup>
+          <Form.Group>
+              <FormSelect 
+                     className="mb-2 form-control col-md-2"
+                     value={categoryId}
+                     onChange={(e) => setCategoryId(e.target.value )}
+                    // aria-label="Filter by category"
+                   >
+                     <option value="">
+                     "All Categories"
+                     </option>
+                     {categories?.map((cat) => (
+                       <option key={cat.id} value={cat.id}>
+                       {cat.name}
+                       </option>
+                    
+                     ))}
+                        </FormSelect>
+                </Form.Group>
 
+          
       <Form.Group className="mb-3" controlId="imageId">
         <Form.Label>Image</Form.Label>
         <Form.Control

@@ -14,7 +14,10 @@ import './AuthForms.css';
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+  // ✅ Get return URL from location state (set by RequireAuth)
+  const state = location.state;
+  const returnUrl = state?.from || "/"; // Default to proudcts
+
   const loading = useSelector(selectAuthLoading);
   const error = useSelector(selectAuthError);
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -28,9 +31,10 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+         navigate(returnUrl, { replace: true })
+      // navigate('/');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate,returnUrl]);
 
   useEffect(() => {
     if (error) {
@@ -56,8 +60,13 @@ const LoginForm = () => {
 
     try {
       await dispatch(login(formData)).unwrap();
+       // ✅ Validate return URL (prevent open redirect vulnerability)
+      const safeRedirect = returnUrl && returnUrl.startsWith("/") 
+        ? returnUrl 
+        : "/";
+
       toast.success('Login successful!');
-      navigate('/');
+        navigate(safeRedirect, { replace: true });
     } catch (err) {
       // Error handled by useEffect
     }

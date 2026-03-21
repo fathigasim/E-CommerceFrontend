@@ -1,6 +1,12 @@
 import api from '../../services/api';
 
 export const paymentsApi = {
+
+   fetchPayments: async (params) => {
+      const response = await api.get('/Payments', {params});
+      console.log(`api payments data`, response.data);
+      return response.data;
+    },
   // Create payment intent
   createPaymentIntent: async (data) => {
     const response = await api.post('/payments/create-payment-intent', {

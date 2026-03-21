@@ -24,7 +24,7 @@ const Navigation = () => {
       <Container>
       
           <Link to="/" className="nav-brand">
-            Payment App
+            ECommerce App
           </Link>
 
         <div className="nav-menu">

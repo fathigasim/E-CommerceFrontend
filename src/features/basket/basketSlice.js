@@ -39,11 +39,11 @@ export const addToBasket = createAsyncThunk(
 
 export const removeFromBasket = createAsyncThunk(
   'basket/removeFromBasket',
-  async ({ ProductId, Quantity }, { rejectWithValue }) => {
+  async ({ productId, quantity }, { rejectWithValue }) => {
 
     try {
       console.log('Removing from basket ');
-      const result = await basketApi.removeFromBasket({ ProductId, Quantity });
+      const result = await basketApi.removeFromBasket({productId, quantity });
       console.log('Basket data removed successfully :', result);
       return result;
     } catch (error) {
@@ -114,6 +114,7 @@ const basketSlice = createSlice({
       
       }).addCase(addToBasket.fulfilled, (state, action) => {
   state.items = action.payload.items;
+   state.loading = false;
   state.total = action.payload.total;
   state.itemCount = action.payload.itemCount;
 }).addCase(addToBasket.rejected, (state) => {
@@ -123,6 +124,7 @@ const basketSlice = createSlice({
  state.loading = true;
  state.error = null;
 }).addCase(removeFromBasket.fulfilled, (state, action) => {
+   state.loading = false;
   state.items = action.payload.items;
   state.total = action.payload.total;
   state.itemCount = action.payload.itemCount;
@@ -133,6 +135,7 @@ const basketSlice = createSlice({
   state.loading = true;
   state.error = null;
 }).addCase(clearBasket.fulfilled, (state) => {
+   state.loading = false
   state.items = [];
   state.total = 0;
   state.itemCount = 0;
