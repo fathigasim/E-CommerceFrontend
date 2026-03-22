@@ -1,16 +1,121 @@
-# React + Vite
+#  E-Commerce Frontend (React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+##  Overview
+This is the frontend of a full-stack e-commerce application built using React and Redux Toolkit. It provides a responsive and dynamic user interface for browsing products, managing a shopping cart, and completing purchases.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+##  Features
 
-## React Compiler
+- Product listing with pagination
+- Search and filtering (by category)
+- URL-based state management (pageNumber, pageSize, q, categoryId)
+- Redux Toolkit for global state management
+- Async API calls using createAsyncThunk
+- Authentication using JWT
+- Automatic refresh token handling
+- Protected routes based on authentication
+- Basket persistence using cookies for guest users
+- Error handling with retry mechanism
+- Responsive UI (Bootstrap)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+##  Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- Redux Toolkit
+- React Router
+- Axios
+- Bootstrap
+
+---
+
+##  State Management
+
+- Global state handled using Redux Toolkit
+- Async operations handled via createAsyncThunk
+- Separate slices for products, authentication, and basket
+- Centralized error and loading handling
+
+---
+
+##  Authentication
+
+- JWT-based authentication
+- Access token + refresh token flow
+- Automatic token refresh on expiration
+- Secure API communication using Axios interceptors
+
+---
+
+## Filtering & Pagination
+
+- Server-side pagination and filtering
+- Query parameters:
+  - pageNumber
+  - pageSize
+  - q (search term)
+  - categoryId
+- URL is the source of truth for filters
+- UI stays in sync with URL parameters
+
+---
+
+##  Basket System
+
+- Add/remove items from basket
+- Basket stored in cookies for guest users
+- Persistent cart across sessions
+- Ready for backend sync on login (extendable)
+
+---
+
+##  Getting Started
+
+### 1. Clone the repository
+
+git clone https://github.com/fathigasim/E-CommerceFront
+cd ecommerce-frontend
+
+---
+
+### 2. Install dependencies
+
+npm install
+
+---
+
+### 3. Run the application
+
+npm run dev
+
+---
+
+##  API Configuration
+
+Make sure the backend API is running and update the base URL if needed:
+
+baseURL: https://localhost:7104/api
+
+---
+
+##  Screenshots 
+
+ screenshots here:
+- Search and filtering
+- Basket page
+- Checkout page
+
+---
+
+##  Future Improvements
+
+- multilingual support 
+
+
+---
+
+##  Author
+
+Mohammed Fathi Abualgasim Mustafa
