@@ -6,23 +6,13 @@ import { productApi } from './productApi';
 
 export const fetchAllProducts = createAsyncThunk(
   'product/fetchAllProducts',
-  async ({pageNumber,pageSize}) => {
+  async ({q,categoryId,pageNumber,pageSize}) => {
 
-     //  const state = store.getState();
-   //const {page, pageSize } = state.products;
-
-    // const params = {
-    // //   q: overrideParams?.searchQuery ?? searchQuery ?? "",
-    // //   category: overrideParams?.searchCategory ?? searchCategory ?? "",
-    // //   sort: overrideParams?.sort ?? sort ?? "",
-    //   pageNumber:searchP.pageNumber,// overrideParams?.page ?? page ?? 1,
-    //   pageSize:4,
-    // };
-
+    
 
     try {
       console.log('Fetching Products');
-      const result = await productApi.fetchProduct({pageNumber,pageSize});
+      const result = await productApi.fetchProduct({q,categoryId,pageNumber,pageSize});
       console.log('Products Data :', result);
       return result;
     } catch (error) {
@@ -76,14 +66,7 @@ export const addProducts = createAsyncThunk(
       }
 
       return rejectWithValue("Failed to add product");
-      //  console.error('Error response:', error.response?.data);
-
-      // // Return standard ValidationProblemDetails format
-      // return rejectWithValue({
-      //   title: error.response?.data?.title || 'An error occurred',
-      //   status: error.response?.data?.status || error.response?.status || 500,
-      //   errors: error.response?.data?.errors || null
-      // });
+     
     }
   }
 );
@@ -189,6 +172,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
         state.loading = false;
+         state.error=null;
         state.items = action.payload.data.items;
         state.pageNumber=action.payload.data.pageNumber
         state.pageSize=action.payload.data.pageSize

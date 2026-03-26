@@ -5,6 +5,7 @@ import productReducer from  '../features/product/productSlice';
 import basketReducer from '../features/basket/basketSlice';
 import orderReducer from '../features/order/orderSlice';  
 import categoryReducer from '../features/category/categorySlice';
+import userManagementReducer from '../features/userManagement/userManagementSlice' 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -13,6 +14,7 @@ export const store = configureStore({
     basket: basketReducer,
     order: orderReducer,
     category: categoryReducer,
+    usermanagement:userManagementReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

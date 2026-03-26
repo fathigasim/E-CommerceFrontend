@@ -30,6 +30,8 @@ import ServerError from './components/ServerError'
 import { ErrorBoundary } from 'react-error-boundary';
 import ProductManagement from './features/product/components/ProductManagement';
 import Forebidden from './components/Forebidden';
+import ResetPassword from './features/userManagement/components/ResetPassword';
+import ForegotPassword from './features/userManagement/components/ForgotPassword';
 
 function ErrorFallback({error, resetErrorBoundary}) {
   return (
@@ -53,7 +55,15 @@ const AppRoutes = () => {
           path="/login"
           element={isAuthenticated ? <Navigate to="/" /> : <LoginForm />}
         />
+  <Route
+          path="/reset-password"
+          element={<ResetPassword />}
+        />
 
+         <Route
+          path="/foregot-password"
+          element={<ForegotPassword />}
+        />
          <Route
           path="/products"
           element={ <Products />}
@@ -91,9 +101,9 @@ const AppRoutes = () => {
         <Route
           path="/"
           element={
-            <PrivateRoute>
+        
               <Products />
-            </PrivateRoute>
+      
           }
         />
          <Route
@@ -107,7 +117,7 @@ const AppRoutes = () => {
         <Route
           path="/checkout"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['User', 'Admin']}>
               <CheckoutPage />
             </PrivateRoute>
           }
@@ -178,7 +188,7 @@ const CheckoutPage = () => {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
       <PaymentWrapper
         // amount={5000} // $50.00 in cents
-        currency="usd"
+        // currency="sar"
         // customerEmail={user?.email || 'customer@example.com'}
         onSuccess={handlePaymentSuccess}
       />

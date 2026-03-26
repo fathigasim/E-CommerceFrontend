@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { tokenService } from './tokenService';
+import i18n from "../i18n";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
   baseURL: apiUrl,
   headers: {
+  
     'Content-Type': 'application/json',
   },
   withCredentials: true,
@@ -32,8 +34,12 @@ api.interceptors.request.use(
     const token = tokenService.getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      
     }
+      // ✅ Always set the language, regardless of token
+    config.headers["Accept-Language"] = i18n.language;
     return config;
+
   },
   (error) => Promise.reject(error)
 );
@@ -47,12 +53,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // ✅ Already redirecting? Stop processing
+    //  Already redirecting? Stop processing
     if (isRedirecting) {
       return new Promise(() => {});
     }
 
-    // ✅ Skip interceptor for logout requests
+    //  Skip interceptor for logout requests
     if (originalRequest?.url?.includes('/auth/logout') || 
         originalRequest?.url?.includes('/logout')) {
       console.log('Logout request - skipping interceptor');
@@ -61,15 +67,15 @@ api.interceptors.response.use(
 
     // ✅ Handle 403 Forbidden
     if (error.response?.status === 403) {
-      console.log("🚫 403 Forbidden");
+      console.log(" 403 Forbidden");
       isRedirecting = true;
       window.location.replace("/forbidden");
       return new Promise(() => {});
     }
 
     // ✅ Handle 500 Server Error
-    if (error.response?.status === 500) {
-      console.log("💥 500 Server Error");
+    if (error.response?.status === 500||!error.response) {
+      console.log(" 500 Server Error");
       isRedirecting = true;
       window.location.replace("/serverError");
       return new Promise(() => {});
@@ -77,7 +83,7 @@ api.interceptors.response.use(
 
     // ✅ Handle Network Error (no response)
     if (!error.response) {
-      console.log("🌐 Network Error");
+      console.log(" Network Error");
       // Don't redirect for network errors - let the component handle it
       return Promise.reject(error);
     }
@@ -89,7 +95,7 @@ api.interceptors.response.use(
     }
 
     // ============ 401 HANDLING BELOW ============
-    console.log('🔐 401 Unauthorized - attempting refresh...');
+    console.log(' 401 Unauthorized - attempting refresh...');
 
     // Already retried?
     if (originalRequest._retry) {
@@ -134,7 +140,7 @@ api.interceptors.response.use(
       userId = user?.id || user?.userId;
     }
 
-    console.log('🔄 Refresh attempt:', {
+    console.log(' Refresh attempt:', {
       hasAccessToken: !!currentAccessToken,
       hasRefreshToken: !!currentRefreshToken,
       userId: userId
@@ -151,7 +157,7 @@ api.interceptors.response.use(
     }
 
     try {
-      console.log('📤 Calling refresh endpoint...');
+      console.log(' Calling refresh endpoint...');
       
       const refreshResponse = await axios.post(
         `${apiUrl}/auth/refresh-token`,
@@ -166,7 +172,7 @@ api.interceptors.response.use(
         }
       );
 
-      console.log('✅ Refresh successful');
+      console.log('Refresh successful');
 
       const newAccessToken = 
         refreshResponse.data?.accessToken || 
@@ -192,7 +198,7 @@ api.interceptors.response.use(
       return api(originalRequest);
 
     } catch (refreshError) {
-      console.error('❌ Refresh failed:', refreshError.response?.data || refreshError.message);
+      console.error('Refresh failed:', refreshError.response?.data || refreshError.message);
       
       processQueue(refreshError, null);
       isRefreshing = false;

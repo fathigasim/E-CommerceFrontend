@@ -23,7 +23,8 @@ import './PaymentWrapper.css';
 import { toast } from 'react-toastify';
 
 const PaymentWrapper = ({ 
-  currency = 'usd', 
+  // currency = 'usd', 
+  
   onSuccess 
 }) => {
   const dispatch = useDispatch();
@@ -100,14 +101,14 @@ const PaymentWrapper = ({
       console.log('Creating payment intent with amount:', amountInCents);
       dispatch(createPaymentIntent({ 
         amount: amountInCents,
-        currency, 
+        currency:"sar", 
         customerEmail: user.email,
       }));
     }
   }, [
     dispatch, 
     amountInCents, 
-    currency, 
+    // currency, 
     user?.email, 
     clientSecret, 
     paymentLoading, 
@@ -175,7 +176,7 @@ const PaymentWrapper = ({
     if (amountInCents > 0 && user?.email) {
       dispatch(createPaymentIntent({ 
         amount: amountInCents, 
-        currency, 
+        currency:"sar", 
         customerEmail: user.email 
       }));
     }
@@ -268,7 +269,7 @@ const PaymentWrapper = ({
       <Elements stripe={stripePromise} options={options}>
         <CheckoutForm
           amount={amountInCents}
-          currency={currency}
+          currency="sar"//{currency}
           customerEmail={user?.email}
           onSuccess={handlePaymentSuccess}
         />

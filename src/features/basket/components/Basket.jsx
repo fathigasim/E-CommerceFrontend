@@ -12,13 +12,14 @@ import { FaInfoCircle } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { Alert, Button, Col, Row } from 'react-bootstrap'
-
+import  {ProductImage} from '../../product/components/ProductImage'
 import Contrainer from 'react-bootstrap/Container'
-
-
+import {formatters} from '../../../utils/formatters'
+import { useTranslation } from 'react-i18next';
 
 const Basket = () => {
-    
+     const {t}=useTranslation(["basket"]);
+     
       const loading = useSelector(selectBasketLoading)
      const  items  = useSelector(selectBasketData);
      const error=useSelector(selectBasketError);
@@ -28,6 +29,7 @@ const Basket = () => {
       const accessToken=tokenService.getAccessToken();
    
        const isLoggedIn = Boolean(user && accessToken);
+const baseUrl = import.meta.env.VITE_STATIC_IMAGES_URL;
       const dispatch = useDispatch();
   
      const RemoveItemFromBasket = async({productId,quantity})=>{
@@ -52,7 +54,7 @@ const Basket = () => {
 
 
     if(loading){
-        return <div>loading</div>
+        return <div>{t("loading")}</div>
     }
     if(error){
         return <div>{error}</div>
@@ -77,7 +79,7 @@ const Basket = () => {
         <Col md={8} sm={12} style={{margin:'auto'}}> 
     {/* style={{display:'flex',flexDirection:'column', maxWidth:"400px",margin:"auto",boxShadow:"5px 5px 10px rgba(0,0,0,0.5)",borderRadius:'1rem',padding:'3px'}}  */}
     
-       {isLoggedIn ? null : <Alert variant="danger"><span><FaInfoCircle /> login first</span></Alert>}
+       {isLoggedIn ? null : <Alert variant="danger"><span><FaInfoCircle /> {t("login_first")}</span></Alert>}
       {items&&
       
       <table className='table table-borderless text-center' style={{justifyContent:'center'}}>
@@ -87,11 +89,12 @@ const Basket = () => {
       console.log('Basket item:', basket);
       return(
          <tr key={basket.productId}>
-        <td ><img src={basket.image} style={{width:'50px',height:'50px'}} className='img img-thumbnail' alt='default.png'/> </td><td>{basket.productName}</td><td>{basket.price}</td>
+        <td ><img src={`${baseUrl}/${basket.imagePath}`} style={{width:'50px',height:'50px'}} className='img img-thumbnail' alt='default.png'/> </td><td>{basket.productName}</td><td>{basket.price}</td>
+    
         <td>{basket.quantity}</td><td>
             <button style={{boxShadow:"5px 5px 10px rgba(0,0,0,0.5)"}} className='btn btn-danger' onClick={()=>{
               RemoveItemFromBasket({productId:basket.productId,quantity:1})}
-              }><span><MdDeleteForever /> remove</span></button></td>
+              }><span><MdDeleteForever /> {t("remove")}</span></button></td>
       </tr>
       )
 })
@@ -100,10 +103,7 @@ const Basket = () => {
       </table>
       
     }
-     <div className='alert alert-danger' style={{display:'flex',justifyContent:'center',height:'2rem',justifyItems:'center',padding:'2px'}}><p>Total:{new Intl.NumberFormat( {
-                        style: "currency",
-                        currency: "SAR",
-                      }).format(total)}</p>
+     <div className='alert alert-danger' style={{display:'flex',justifyContent:'center',height:'2rem',justifyItems:'center',padding:'2px'}}><p>Total:{formatters.currency(total)}</p>
                       </div>
                        <div className='' style={{display:'flex',justifyContent:'space-around',minHeight:'2rem',gap:'8rem',padding:'1px'}}>
         <div style={{zIndex:'100',justifyItems:'stretch'}}>  <button className='btn btn-danger rounded-pill' onClick={async ()=>{
@@ -118,7 +118,7 @@ const Basket = () => {
             }
           }
         }}
-          ><span><MdDeleteForever /> remove_basket</span></button></div>
+          ><span><MdDeleteForever /> {t("remove_basket")}</span></button></div>
            <div style={{justifyItems:'end'}} >
             {/* <button 
             style={{boxShadow:"5px 5px 10px rgba(0,0,0,0.5)"}}
@@ -128,7 +128,7 @@ const Basket = () => {
                 <Button variant="primary" disabled={!isLoggedIn} className="rounded-pill" onClick={
                   
                   ()=>window.location.href='/checkout'
-                  }><span><FaRegMoneyBillAlt className='mr-2'/> Proceed to Checkout</span></Button>
+                  }><span><FaRegMoneyBillAlt className='mr-2'/> {t("pay")}</span></Button>
            </div>
          
     </div>

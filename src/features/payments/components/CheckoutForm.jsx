@@ -96,7 +96,7 @@ const CheckoutForm = ({ amount, currency = 'usd', customerEmail, onSuccess }) =>
         <div className="amount-info">
           <span>Amount:</span>
           <strong>
-            {new Intl.NumberFormat('en-US', {
+            {new Intl.NumberFormat('ar-SA', {
               style: 'currency',
               currency: currency.toUpperCase(),
             }).format(amount / 100)}

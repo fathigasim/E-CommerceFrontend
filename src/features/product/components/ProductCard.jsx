@@ -27,14 +27,14 @@ export const ProductCard = ({ product }) => {
       <ProductImage
         imageUrl={product?.imageUrl}
         alt={product?.name}
-        height="200px"
+        height="150px"
         className="card-img-top"
       />
       
-      <Card.Body className="d-flex flex-column">
+      <Card.Body className="d-flex flex-column" style={{height:"140px"}} >
         <Card.Title className="text-truncate">{product?.name}</Card.Title>
         <Card.Text className="text-muted">
-          {product?.description?.substring(0, 100)}...
+          {product?.description?.substring(0, 70)}...
         </Card.Text>
         <div className="mt-auto">
           <h5 className="text-primary">${product?.price}</h5>
