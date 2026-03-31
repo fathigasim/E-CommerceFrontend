@@ -74,12 +74,12 @@ api.interceptors.response.use(
     }
 
     // ✅ Handle 500 Server Error
-    if (error.response?.status === 500||!error.response) {
-      console.log(" 500 Server Error");
-      isRedirecting = true;
-      window.location.replace("/serverError");
-      return new Promise(() => {});
-    }
+    // if (error.response?.status === 500||!error.response) {
+    //   console.log(" 500 Server Error");
+    //   isRedirecting = true;
+    //   window.location.replace("/serverError");
+    //   return new Promise(() => {});
+    // }
 
     // ✅ Handle Network Error (no response)
     if (!error.response) {

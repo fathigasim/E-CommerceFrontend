@@ -22,10 +22,10 @@ import Orders from './features/order/components/Orders';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Products from './features/product/components/products';
+import Products from './features/product/components/Products';
 import ProductList from './features/product/components/ProductList';
 import ProductEdit from './features/product/components/ProductEdit';
-import Basket from './features/Basket/components/Basket';
+import Basket from './features/basket/components/Basket';
 import ServerError from './components/ServerError'
 import { ErrorBoundary } from 'react-error-boundary';
 import ProductManagement from './features/product/components/ProductManagement';
@@ -177,7 +177,7 @@ const HomePage = () => {
 };
 
 const CheckoutPage = () => {
-  const user = useSelector((state) => state.auth.user);
+ // const user = useSelector((state) => state.auth.user);
 
   const handlePaymentSuccess = (paymentIntent) => {
     console.log('Payment successful:', paymentIntent);

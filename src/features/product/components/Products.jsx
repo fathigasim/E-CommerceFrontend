@@ -16,7 +16,7 @@ import {selectCategoryData,getCategory} from '../../category/categorySlice'
 import ProductCard from './ProductCard';
 import { Alert, Spinner, Row, Col, Container,Form,Button } from "react-bootstrap";
 import Paginationbootstrap from '../../../components/Pagination';
-import Basket from '../../Basket/components/Basket';
+import Basket from '../../basket/components/Basket';
 import { useTranslation } from 'react-i18next';
 //import {selectBasketLoading,selectBasketError,selectBasketData} from '../../basket/basketSlice'
 const Products = () => {

@@ -3,14 +3,15 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-    //  host: '127.0.0.1',  //  Fix: Use IPv4 instead of IPv6 (::1)
-    // port: 5174,          //  Fix: Use a different port
   server: {
+    port: 5173,
     proxy: {
       '/api': {
-        target: 'https://localhost:7104',  // Your backend URL
+        target: 'https://localhost:7104',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        secure: false,
+        // ❌ REMOVE THIS LINE - it breaks your API routes
+        // rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }
