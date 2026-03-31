@@ -23,15 +23,31 @@ export const tokenService = {
   },
   
   // Get user data
-  getUser: () => {
+ getUser: () => {
+  try {
     const userStr = localStorage.getItem(USER_KEY);
-    return userStr ? JSON.parse(userStr) : null;
-  },
+
+    if (!userStr || userStr === "undefined" || userStr === "null") {
+      return null;
+    }
+
+    return JSON.parse(userStr);
+  } catch (error) {
+    console.error("Invalid user in localStorage:", error);
+    localStorage.removeItem(USER_KEY); // cleanup bad data
+    return null;
+  }
+},
   
   // Set user data
   setUser: (user) => {
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
-  },
+  if (!user) {
+    localStorage.removeItem(USER_KEY);
+    return;
+  }
+
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+},
   
   // Check if token is expired
   isTokenExpired: (token) => {
