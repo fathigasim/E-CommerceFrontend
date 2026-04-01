@@ -19,7 +19,7 @@ build/
 .env
 .env.*
 *.local
-
+nginx.conf
 # Vite files
 .vite/
 

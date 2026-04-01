@@ -3,7 +3,7 @@ import { tokenService } from './tokenService';
 import i18n from "../i18n";
 
 const apiUrl = import.meta.env.VITE_API_URL;
-
+console.log("🔥 API URL FROM VITE:", apiUrl);
 const api = axios.create({
   baseURL: apiUrl,
   headers: {

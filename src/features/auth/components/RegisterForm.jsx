@@ -22,12 +22,13 @@ const RegisterForm = () => {
   const registerSuccess = useSelector(selectRegisterSuccess);
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
-  const [formData, setFormData] = useState({
+  const [fData, setFData] = useState({
     email: '',
     password: '',
     confirmPassword: '',
     firstName: '',
     lastName: '',
+    username: '',
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -55,30 +56,30 @@ const RegisterForm = () => {
   }, [error, dispatch]);
 
   useEffect(() => {
-    if (formData.confirmPassword) {
-      setPasswordMatch(formData.password === formData.confirmPassword);
+    if (fData.confirmPassword) {
+      setPasswordMatch(fData.password === fData.confirmPassword);
     }
-  }, [formData.password, formData.confirmPassword]);
+  }, [fData.password, fData.confirmPassword]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
+    setFData({
+      ...fData,
       [e.target.name]: e.target.value,
     });
   };
 
   const validateForm = () => {
-    if (!formData.email || !formData.password || !formData.firstName || !formData.lastName) {
+    if (!fData.email || !fData.password || !fData.firstName || !fData.lastName) {
       toast.error('Please fill in all fields');
       return false;
     }
 
-    if (formData.password.length < 6) {
+    if (fData.password.length < 6) {
       toast.error('Password must be at least 6 characters');
       return false;
     }
 
-    if (formData.password !== formData.confirmPassword) {
+    if (fData.password !== fData.confirmPassword) {
       toast.error('Passwords do not match');
       return false;
     }
@@ -92,12 +93,20 @@ const RegisterForm = () => {
     if (!validateForm()) {
       return;
     }
-
-    const { confirmPassword, ...registerData } = formData;
+ const formData = new FormData();
+    formData.append("email", fData.email);
+    formData.append("password", fData.password);
+    formData.append("confirmPassword", fData.confirmPassword);
+    formData.append("firstName", fData.firstName);
+    formData.append("lastName", fData.lastName);
+    formData.append("username", fData.username);
+    // const { confirmPassword, ...registerData } = formData;
+   // const { registerData } = formData;
     
     try {
-      await dispatch(register(registerData)).unwrap();
+      await dispatch(register(formData)).unwrap();
     } catch (err) {
+      console.error('Registration error:', err);
       // Error handled by useEffect
     }
   };
@@ -114,7 +123,7 @@ const RegisterForm = () => {
                 type="text"
                 id="firstName"
                 name="firstName"
-                value={formData.firstName}
+                value={fData.firstName}
                 onChange={handleChange}
                 placeholder="First name"
                 required
@@ -127,21 +136,33 @@ const RegisterForm = () => {
                 type="text"
                 id="lastName"
                 name="lastName"
-                value={formData.lastName}
+                value={fData.lastName}
                 onChange={handleChange}
                 placeholder="Last name"
                 required
               />
             </div>
           </div>
-
+          <div className="form-group">
+            <label htmlFor="email">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={fData.username}
+              onChange={handleChange}
+              placeholder="Enter your username"
+              required
+              autoComplete="off"
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
               name="email"
-              value={formData.email}
+              value={fData.email}
               onChange={handleChange}
               placeholder="Enter your email"
               required
@@ -156,7 +177,7 @@ const RegisterForm = () => {
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 name="password"
-                value={formData.password}
+                value={fData.password}
                 onChange={handleChange}
                 placeholder="Enter your password"
                 required
@@ -179,14 +200,15 @@ const RegisterForm = () => {
               type={showPassword ? 'text' : 'password'}
               id="confirmPassword"
               name="confirmPassword"
-              value={formData.confirmPassword}
+              value={fData.confirmPassword}
               onChange={handleChange}
               placeholder="Confirm your password"
               required
-              autoComplete="new-password"
+              autoComplete="confirm-password"
               className={!passwordMatch ? 'error' : ''}
             />
-            {!passwordMatch && formData.confirmPassword && (
+           
+            {!passwordMatch && fData.confirmPassword && (
               <small className="error-text">Passwords do not match</small>
             )}
           </div>

@@ -32,7 +32,7 @@ import ProductManagement from './features/product/components/ProductManagement';
 import Forebidden from './components/Forebidden';
 import ResetPassword from './features/userManagement/components/ResetPassword';
 import ForegotPassword from './features/userManagement/components/ForgotPassword';
-
+import Category from './features/category/Category';
 function ErrorFallback({error, resetErrorBoundary}) {
   return (
     <div role="alert">
@@ -59,7 +59,10 @@ const AppRoutes = () => {
           path="/reset-password"
           element={<ResetPassword />}
         />
-
+  <Route
+          path="/addCategory"
+          element={<Category />}
+        />
          <Route
           path="/foregot-password"
           element={<ForegotPassword />}

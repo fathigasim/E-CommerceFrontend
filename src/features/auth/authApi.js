@@ -3,7 +3,7 @@ import api from '../../services/api';
 export const authApi = {
   // Register new user
   register: async (userData) => {
-    const response = await api.post('/auth/register', userData);
+    const response = await api.post('/auth/register', userData,{headers :{ 'Content-Type':'multipart/form-data'}});
     return response.data;
   },
 
