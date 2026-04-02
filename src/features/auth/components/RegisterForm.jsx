@@ -11,9 +11,11 @@ import {
   clearRegisterSuccess,
 } from '../authSlice';
 import { toast } from 'react-toastify';
+import { Container,Col,Row,Form,FormControl } from 'react-bootstrap';
 import './AuthForms.css';
 
 const RegisterForm = () => {
+    const [formErrors, setFormErrors] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
@@ -32,6 +34,7 @@ const RegisterForm = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   useEffect(() => {
@@ -68,31 +71,31 @@ const RegisterForm = () => {
     });
   };
 
-  const validateForm = () => {
-    if (!fData.email || !fData.password || !fData.firstName || !fData.lastName) {
-      toast.error('Please fill in all fields');
-      return false;
-    }
+  // const validateForm = () => {
+  //   if (!fData.email || !fData.password || !fData.firstName || !fData.lastName) {
+  //     toast.error('Please fill in all fields');
+  //     return false;
+  //   }
 
-    if (fData.password.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      return false;
-    }
+  //   if (fData.password.length < 6) {
+  //     toast.error('Password must be at least 6 characters');
+  //     return false;
+  //   }
 
-    if (fData.password !== fData.confirmPassword) {
-      toast.error('Passwords do not match');
-      return false;
-    }
+  //   if (fData.password !== fData.confirmPassword) {
+  //     toast.error('Passwords do not match');
+  //     return false;
+  //   }
 
-    return true;
-  };
+  //   return true;
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    // if (!validateForm()) {
+    //   return;
+    // }
  const formData = new FormData();
     formData.append("email", fData.email);
     formData.append("password", fData.password);
@@ -108,77 +111,151 @@ const RegisterForm = () => {
     } catch (err) {
       console.error('Registration error:', err);
       // Error handled by useEffect
+      // Error handled by useEffect
+        console.log("Validation errors:", err);
+  if (err?.message) {
+      setFormErrors({ general: err.message });
+      console.error('general message :', formErrors.general.message) ;
+    }
+    setFormErrors({
+      email: err?.Email?.[0],
+      password: err?.Password?.[0],
+      firstName: err?.FirstName?.[0],
+      lastName: err?.LastName?.[0],
+      username: err?.UserName?.[0],
+      confirmPassword: err?.ConfirmPassword?.[0],
+    });
+      console.error('Login failed:', err);
     }
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
+    <Container className="mt-5 ">
+      <Row className="justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+         <Col md={5} className="mt-5 mx-auto">
         <h2>Register</h2>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-row">
-            <div className="form-group">
+        <Form noValidate onSubmit={handleSubmit} className="auth-form">
+          <Row className="mb-3">
+            <Col>
+            <Form.Group className="form-group">
               <label htmlFor="firstName">First Name</label>
-              <input
+              <FormControl
                 type="text"
                 id="firstName"
                 name="firstName"
                 value={fData.firstName}
-                onChange={handleChange}
+                onChange={(e)=>{handleChange(e)
+     if (formErrors.firstName) {
+      setFormErrors(prev => ({
+        ...prev,
+        firstName: undefined
+      }))}
+                }}
+                   isInvalid={!!formErrors.firstName}
                 placeholder="First name"
                 required
+                  
+             
+              autoComplete="name"
               />
-            </div>
-
-            <div className="form-group">
+                <Form.Control.Feedback type="invalid">
+                                    {formErrors.firstName}
+                                     </Form.Control.Feedback>
+            </Form.Group>
+            </Col>
+           <Col>
+            <Form.Group className="form-group">
               <label htmlFor="lastName">Last Name</label>
-              <input
+              <FormControl
                 type="text"
                 id="lastName"
                 name="lastName"
                 value={fData.lastName}
-                onChange={handleChange}
+                onChange={(e)=>{handleChange(e)
+                    if (formErrors.lastName) {
+      setFormErrors(prev => ({
+        ...prev,
+        lastName: undefined
+      }))}
+                }}
+                  isInvalid={!!formErrors.lastName}
                 placeholder="Last name"
                 required
+                autoComplete='name'
               />
-            </div>
-          </div>
-          <div className="form-group">
+                <Form.Control.Feedback type="invalid">
+                                    {formErrors.lastName}
+                                     </Form.Control.Feedback>
+            </Form.Group>
+            </Col>
+          </Row>
+          <Form.Group className="form-group">
             <label htmlFor="email">Username</label>
-            <input
+            <FormControl
               type="text"
               id="username"
               name="username"
               value={fData.username}
-              onChange={handleChange}
+              onChange={(e)=>{handleChange(e)
+                  if (formErrors.username) {
+      setFormErrors(prev => ({
+        ...prev,
+        username: undefined
+      }))}
+              }}
+               isInvalid={!!formErrors.username}
               placeholder="Enter your username"
+              
               required
-              autoComplete="off"
+              autoComplete="username"
             />
-          </div>
-          <div className="form-group">
+            <Form.Control.Feedback type="invalid">
+                                    {formErrors.username}
+                                     </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group className="form-group">
             <label htmlFor="email">Email</label>
-            <input
+            <FormControl
               type="email"
               id="email"
               name="email"
               value={fData.email}
-              onChange={handleChange}
+              onChange={(e)=>{handleChange(e)
+                  if (formErrors.email) {
+      setFormErrors(prev => ({
+        ...prev,
+        email: undefined
+      }))}
+              
+              }}
+                  isInvalid={!!formErrors.email}
               placeholder="Enter your email"
               required
               autoComplete="email"
             />
-          </div>
+             <Form.Control.Feedback type="invalid">
+                                    {formErrors.email}
+                                     </Form.Control.Feedback>
+          </Form.Group>
 
-          <div className="form-group">
+          <Form.Group className="form-group">
             <label htmlFor="password">Password</label>
-            <div className="password-input-wrapper">
-              <input
+             <div className="password-wrapper">
+              <FormControl
+              className='password-input-wrapper'
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 name="password"
                 value={fData.password}
-                onChange={handleChange}
+                onChange={(e) =>{ handleChange(e)
+
+                    if (formErrors.password) {
+      setFormErrors(prev => ({
+        ...prev,
+        password: undefined
+      }))}
+                }}
+                 isInvalid={!!formErrors.password}
                 placeholder="Enter your password"
                 required
                 autoComplete="new-password"
@@ -190,28 +267,51 @@ const RegisterForm = () => {
               >
                 {showPassword ? '👁️' : '👁️‍🗨️'}
               </button>
+                
             </div>
-            <small>Minimum 6 characters</small>
-          </div>
+             <Form.Control.Feedback type="invalid">
+                                    {formErrors.password}
+                                     </Form.Control.Feedback>
+          </Form.Group>
 
-          <div className="form-group">
+          <Form.Group className="form-group">
             <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
+             <div className="password-wrapper">
+            <FormControl
+             className='password-input-wrapper'
+              type={showConfirmPassword ? 'text' : 'password'}
               id="confirmPassword"
               name="confirmPassword"
               value={fData.confirmPassword}
-              onChange={handleChange}
+              onChange={(e)=>{handleChange(e)
+
+     if (formErrors.confirmPassword) {
+      setFormErrors(prev => ({
+        ...prev,
+        confirmPassword: undefined
+      }))}
+              }}
+              isInvalid={!!formErrors.confirmPassword}
               placeholder="Confirm your password"
               required
               autoComplete="confirm-password"
-              className={!passwordMatch ? 'error' : ''}
+              // className={!passwordMatch ? 'error' : ''}
             />
-           
-            {!passwordMatch && fData.confirmPassword && (
+             <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+              </button>
+           </div>
+            {/* {!passwordMatch && fData.confirmPassword && (
               <small className="error-text">Passwords do not match</small>
-            )}
-          </div>
+            )} */}
+              <Form.Control.Feedback type="invalid">
+                                    {formErrors.confirmPassword}
+                                     </Form.Control.Feedback>
+          </Form.Group>
 
           <button
             type="submit"
@@ -220,15 +320,15 @@ const RegisterForm = () => {
           >
             {loading ? 'Registering...' : 'Register'}
           </button>
-        </form>
-
+        </Form>
+        </Col>
         <div className="auth-footer">
           <p>
             Already have an account? <Link to="/login">Login here</Link>
           </p>
         </div>
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 

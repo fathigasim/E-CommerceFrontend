@@ -65,20 +65,22 @@
   border-color: #dc3545;
 }
 
-.password-input-wrapper {
+
+/* Parent container MUST be relative */
+.password-wrapper {
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
-.password-input-wrapper input {
-  flex: 1;
-  padding-right: 45px;
+/* Target the actual input element */
+.password-input-wrapper {
+  padding-right: 45px; /* space for eye */
 }
-
 .toggle-password {
   position: absolute;
+  top: 50%;
   right: 10px;
+  transform: translateY(-50%);
+
   background: none;
   border: none;
   cursor: pointer;
@@ -86,6 +88,10 @@
   padding: 5px;
   opacity: 0.6;
   transition: opacity 0.2s ease;
+}
+
+.toggle-password:hover {
+  opacity: 1;
 }
 
 .toggle-password:hover {

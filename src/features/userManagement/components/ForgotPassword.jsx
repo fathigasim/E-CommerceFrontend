@@ -54,9 +54,9 @@ export default function ForegotPassword() {
 
   return (
    
-    <Container className="mt-5">
+    <Container className="mt-5 ">
       <Row>
-        <Col md={6}>
+        <Col md={5} className="mt-5 mx-auto">
     <Form noValidate onSubmit={handleSubmit} className="p-6 bg-white shadow rounded w-96 px-3 py-3">
       {formErrors.email &&  <Alert variant="danger">{formErrors.email}</Alert>}
       <Form.Group className="mb-3" controlId="formGroupEmail">
