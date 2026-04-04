@@ -112,9 +112,9 @@ const AppRoutes = () => {
          <Route
           path="/orders"
           element={
-            <PrivateRoute>
+           
               <Orders />
-            </PrivateRoute>
+         
           }
         />
         <Route

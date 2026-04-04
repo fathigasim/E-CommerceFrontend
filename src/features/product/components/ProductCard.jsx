@@ -4,6 +4,7 @@ import { ProductImage } from './ProductImage';
 import { BsCartPlus } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import  {addToBasket}  from '../../basket/basketSlice';
+import {formatters} from '../../../utils/formatters'
 export const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const handleAddToCart = async ({productId,quantity})=>{
@@ -37,7 +38,7 @@ export const ProductCard = ({ product }) => {
           {product?.description?.substring(0, 70)}...
         </Card.Text>
         <div className="mt-auto">
-          <h5 className="text-primary">${product?.price}</h5>
+          <h5 className="text-primary">{formatters.currency(product?.price.toFixed(2))}</h5>
         </div>
       </Card.Body>
          <Button variant="primary"  className="mt-2 amiri-bold" 

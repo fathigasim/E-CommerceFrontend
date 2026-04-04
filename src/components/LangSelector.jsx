@@ -13,10 +13,10 @@ export default function LangSelector() {
   const isArabic = i18n.language === "ar";
 
   return (
-    <Container className="container">
+    
       <Button className="btn btn-primary"  onClick={toggleLanguage}>
         {t("Switchto")} {isArabic ? t("English") : t("Arabic")}
       </Button>
-    </Container>
+    
   );
 }

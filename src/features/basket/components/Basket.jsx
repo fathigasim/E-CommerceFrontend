@@ -56,9 +56,9 @@ const baseUrl = import.meta.env.VITE_STATIC_IMAGES_URL;
     if(loading){
         return <div>{t("loading")}</div>
     }
-    if(error){
-        return <div>{error}</div>
-    }
+    // if(error){
+    //     return <div>{error}</div>
+    // }
      if (!items || items.length === 0) {
         return null; // or a subtle "basket empty" message
     }

@@ -3,16 +3,16 @@ import { orderApi } from './orderApi';
 
 export const fetchOrders = createAsyncThunk(
   'order/fetchAllOrders',
-  async (_, { rejectWithValue }) => {
+  async ({q,pageNumber,pageSize}, { rejectWithValue }) => {
 
     try {
       console.log('Fetching Orders');
-      const result = await orderApi.fetchOrders();
+      const result = await orderApi.fetchOrders({q,pageNumber,pageSize});
       console.log('Orders Data :', result);
       return result;
     } catch (error) {
    
-     return rejectWithValue(error.response?.data?.message || error.message || 'Failed to fetch order');
+     return rejectWithValue(error.response?.data || error.message || 'Failed to fetch order');
     }
   }
 );
@@ -29,11 +29,13 @@ export const createOrder = createAsyncThunk(
   }
 );
 
-                // ✅ Initial state
+// ✅ Initial state
 const initialState = {
 isSuccess:false,
- data:[],
+ items:[],
+ totalPages:0,
  errorMessage:null,
+
  error: null,
 loading: false,
 };                                                                                                                    
@@ -57,9 +59,10 @@ const orderSlice = createSlice({
 
       }).addCase(fetchOrders.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.data;
+        state.items = action.payload.data.items;
+        state.totalPages=action.payload.data.totalPages
+        state.error=null;
         console.log('order data:', state.items);
-   
       })
       .addCase(fetchOrders.rejected, (state) => {
         state.loading = false;
@@ -70,8 +73,8 @@ const orderSlice = createSlice({
     });
 
     // ✅ Selectors
-    export const selectOrderData = (state) => state.order.data;
-
+    export const selectOrderData = (state) => state.order.items;
+    export const selectOrderTotalPages = (state) => state.order.totalPages; // The Number
     export const selectOrderLoading = (state) => state.order.loading;
     export const selectOrderError = (state) => state.order.error;
     

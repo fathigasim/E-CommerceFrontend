@@ -50,7 +50,6 @@ const Products = () => {
    // Initial load - sync URL params with Redux
   useEffect(() => {
    
-   
     dispatch(fetchAllProducts({ 
         q: currentSearch,
       categoryId: currentCategory,
@@ -132,22 +131,22 @@ if (error) return (
 
   }
 
-  if (!products || products.length === 0) {
-    return (
-      <Container className="p-5">
-        <Alert variant="info" className="text-center">
-          No products found
-        </Alert>
-      </Container>
-    );
-  }
+  // if (!products || products.length === 0) {
+  //   return (
+  //     <Container className="p-5">
+  //       <Alert variant="info" className="text-center">
+  //         No products found
+  //       </Alert>
+  //     </Container>
+  //   );
+  // }
 
   return (
     <>
   
            <Container fluid className="py-4 px-4 mb-5" >
             <Row className='justify-content-center'>
-              <Col md={8} >
+              <Col sm={8} >
       <Basket/>
       </Col>
       </Row>
@@ -200,8 +199,14 @@ if (error) return (
     
    
     
-         
-    <Container fluid > {/* Changed fluid="md" to fluid */}
+         {!products || products.length === 0 ?(
+          <Container className="p-5">
+            <Alert variant="info" className="text-center">
+              No products found
+            </Alert>
+          </Container>
+         ):(
+          <Container fluid > {/* Changed fluid="md" to fluid */}
       <Row className="g-4 ">   {/* Row with gap */}
         {products.map((product) => (
           <Col className='px-2 py-2' style={{margin:'auto'}} key={product.id} xs={12} sm={6} md={4} lg={3}>
@@ -210,6 +215,8 @@ if (error) return (
         ))}
       </Row>
     </Container>
+         )}
+    
 
    
   

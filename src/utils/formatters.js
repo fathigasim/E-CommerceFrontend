@@ -1,22 +1,5 @@
 import i18n from 'i18next';
 
-// export interface CurrencyFormatter {
-//     (value: number | bigint, currency?: string): string;
-// }
-
-// export interface NumberFormatter {
-//     (value: number | bigint): string;
-// }
-
-// export interface DateFormatter {
-//     (value: Date | string | number): string;
-// }
-
-// export interface Formatters {
-//     currency: CurrencyFormatter;
-//     number: NumberFormatter;
-//     date: DateFormatter;
-// }
 
 export const formatters = {
     currency: (value, currency = 'SAR') =>
