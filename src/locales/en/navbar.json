@@ -18,6 +18,8 @@
     "Operations": "Operations",
      "Login_nav":" Login",
       "ECommerceApp":"Shop online",
-      "Register":"Register"
+      "Register":"Register",
+      "Orders_List":"Orders List",
+      "Logout":"Logout"
  
 }

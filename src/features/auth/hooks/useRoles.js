@@ -1,21 +1,35 @@
 // hooks/useRoles.js
 import { useMemo } from 'react';
-import { tokenService } from '../../../services/tokenService';
+import { useSelector } from 'react-redux';
+import { selectUserRoles } from '../authSlice';
+
 
 export const useRoles = () => {
-  const roles = useMemo(() => {
-    const token = tokenService.getAccessToken();
-    return tokenService.getUserRoles(token) || [];
-  }, []);
+  // 1. Grab roles directly from your Redux auth state
+  const roles = useSelector(selectUserRoles)|| []; // Default to empty array if undefined
+
+  // 2. Memoize checks based on the roles from Redux
+  const roleChecks = useMemo(() => {
+    const rolesLower = roles.map(r => r.toLowerCase());
+    
+    return {
+      isAdmin: rolesLower.includes('admin'),
+      isManager: rolesLower.includes('manager'),
+      rolesLower // helper for the hasRole function
+    };
+  }, [roles]); // Re-calculates whenever Redux roles change
 
   const hasRole = (requiredRoles) => {
     if (!requiredRoles || requiredRoles.length === 0) return true;
-    const rolesLower = roles.map(r => r.toLowerCase());
-    return requiredRoles.some(role => rolesLower.includes(role.toLowerCase()));
+    return requiredRoles.some(role => 
+      roleChecks.rolesLower.includes(role.toLowerCase())
+    );
   };
 
-  const isAdmin = roles.map(r => r.toLowerCase()).includes('admin');
-  const isManager = roles.map(r => r.toLowerCase()).includes('manager');
-
-  return { roles, hasRole, isAdmin, isManager };
+  return { 
+    roles, 
+    hasRole, 
+    isAdmin: roleChecks.isAdmin, 
+    isManager: roleChecks.isManager 
+  };
 };

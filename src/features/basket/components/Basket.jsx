@@ -89,7 +89,7 @@ const baseUrl = import.meta.env.VITE_STATIC_IMAGES_URL;
       console.log('Basket item:', basket);
       return(
          <tr key={basket.productId}>
-        <td ><img src={`${baseUrl}/${basket.imagePath}`} alt="Product" style={{width:'50px',height:'50px'}} className='img img-thumbnail' alt='default.png'/> </td><td>{basket.productName}</td><td>{basket.price}</td>
+        <td ><img src={`${baseUrl}/${basket.imagePath}`}  style={{width:'50px',height:'50px'}} className='img img-thumbnail' alt='default.png'/> </td><td>{basket.productName}</td><td>{basket.price}</td>
     
         <td>{basket.quantity}</td><td>
             <button style={{boxShadow:"5px 5px 10px rgba(0,0,0,0.5)"}} className='btn btn-danger' onClick={()=>{

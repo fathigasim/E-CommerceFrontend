@@ -27,10 +27,10 @@ export const ProductImage = memo(({
         alt={alt}
         className={`product-img ${className} ${isLoaded ? 'loaded' : ''}`}
         onLoad={() => setIsLoaded(true)}
-        onError={(e) => { 
-          e.target.onerror = null;
-          e.target.src = fallbackSrc; 
-        }}
+        // onError={(e) => { 
+        //   e.target.onerror = null;
+        //   e.target.src = fallbackSrc; 
+        // }}
         loading="lazy"
       />
     </div>

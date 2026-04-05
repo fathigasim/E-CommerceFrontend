@@ -190,7 +190,7 @@ const RegisterForm = () => {
             </Col>
           </Row>
           <Form.Group className="form-group">
-            <label htmlFor="email">Username</label>
+            <label htmlFor="username">Username</label>
             <FormControl
               type="text"
               id="username"
@@ -243,6 +243,7 @@ const RegisterForm = () => {
              <div className="password-wrapper">
               <FormControl
               className='password-input-wrapper'
+            
                 type={showPassword ? 'text' : 'password'}
                 id="password"
                 name="password"
@@ -258,20 +259,20 @@ const RegisterForm = () => {
                  isInvalid={!!formErrors.password}
                 placeholder="Enter your password"
                 required
-                autoComplete="new-password"
+                autoComplete="password"
               />
-              <button
+              {/* <button
                 type="button"
                 className="toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? '👁️' : '👁️‍🗨️'}
-              </button>
-                
-            </div>
-             <Form.Control.Feedback type="invalid">
+              </button> */}
+                 <Form.Control.Feedback type="invalid">
                                     {formErrors.password}
                                      </Form.Control.Feedback>
+            </div>
+            
           </Form.Group>
 
           <Form.Group className="form-group">
@@ -297,26 +298,27 @@ const RegisterForm = () => {
               autoComplete="confirm-password"
               // className={!passwordMatch ? 'error' : ''}
             />
-             <button
+             {/* <button
                 type="button"
                 className="toggle-password"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
-              </button>
+              </button> */}
+              <Form.Control.Feedback type="invalid">
+                                    {formErrors.confirmPassword}
+                                     </Form.Control.Feedback>
            </div>
             {/* {!passwordMatch && fData.confirmPassword && (
               <small className="error-text">Passwords do not match</small>
             )} */}
-              <Form.Control.Feedback type="invalid">
-                                    {formErrors.confirmPassword}
-                                     </Form.Control.Feedback>
+              
           </Form.Group>
 
           <button
             type="submit"
             className="auth-button"
-            disabled={loading || !passwordMatch}
+            disabled={loading }
           >
             {loading ? 'Registering...' : 'Register'}
           </button>
