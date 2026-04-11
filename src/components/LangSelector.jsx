@@ -14,7 +14,7 @@ export default function LangSelector() {
 
   return (
     
-      <Button className="btn btn-primary"  onClick={toggleLanguage}>
+      <Button className="btn btn-primary" size="sm"  onClick={toggleLanguage}>
         {t("Switchto")} {isArabic ? t("English") : t("Arabic")}
       </Button>
     

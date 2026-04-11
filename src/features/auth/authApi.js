@@ -10,6 +10,7 @@ export const authApi = {
   // Login user
   login: async (credentials) => {
     const response = await api.post('/auth/login', credentials);
+    console.log('Login response:', response.data);
     return response.data;
   },
 

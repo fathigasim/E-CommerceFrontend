@@ -140,7 +140,7 @@ if (error) return (
   //     </Container>
   //   );
   // }
-
+console.log("Total pages in product component:", totalPages);
   return (
     <>
   

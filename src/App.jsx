@@ -19,6 +19,7 @@ import Payments from './features/payments/components/Payments'
 // Common Components
 import Navigation from './components/Navigation';
 import Orders from './features/order/components/Orders';
+import OrdersCharts from './features/visualreports/OrdersCharts';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -114,6 +115,15 @@ const AppRoutes = () => {
           element={
            
               <Orders />
+         
+          }
+        />
+
+        <Route
+          path="/orders/charts"
+          element={
+           
+              <OrdersCharts />
          
           }
         />

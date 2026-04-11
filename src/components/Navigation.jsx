@@ -11,6 +11,7 @@ import './Navigation.css';
 const Navigation = () => {
   const { user, isAuthenticated ,logout } = useAuth();
   const {isAdmin,roles}=useRoles();
+
   console.log('testing admin result',isAdmin)
   console.log('testing All user roles ',roles)
     console.log('testing authentication result',isAuthenticated)
@@ -29,79 +30,65 @@ const Navigation = () => {
   return (
 
 
-<Navbar bg="dark" variant="dark" expand="lg" className="d-flex px-3">
-  <Container>
-
-    {/* Brand */}
-    <Navbar.Brand as={Link} to="/">
+<Navbar bg="dark" variant="dark" expand="lg" className="px-3">
+  <Container fluid>
+    {/* Brand: Stays at the 'Start' */}
+    <Navbar.Brand as={Link} to="/" className="mx-0">
       {t("ECommerceApp")}
     </Navbar.Brand>
 
-    {/* Mobile toggle */}
     <Navbar.Toggle aria-controls="main-navbar" />
 
     <Navbar.Collapse id="main-navbar">
-
-      {/* Left links (optional) */}
-      <Nav className="me-auto">
+      {/* Left side links */}
+      <Nav className="me-auto px-2">
         {isAuthenticated && (
           <Nav.Link as={Link} to="/payments">
-            My Payments
+            {t("My Payments")}
           </Nav.Link>
         )}
       </Nav>
 
-      {/* Right side */}
-    <Nav className="ms-auto align-items-center gap-3"> 
-  {isAuthenticated ? (
-    <div className='me d-flex  px-3 align-content-baseline'>
-       <div >
-        {isAdmin ?( 
-          <div className='d-flex gap-3'>
-          <NavDropdown title={t('Orders')} id="nav-dropdown-orders">
-              <NavDropdown.Item as={Link} to="/orders">
-               {t('Orders_List')}
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/orderByDateRep">
-               {t('Order_By_Date')}
-              </NavDropdown.Item>
-            </NavDropdown>
-             <NavDropdown title={t('Payments')} id="nav-dropdown-payments">
-              <NavDropdown.Item as={Link} to="/payments">
-               {t('Payments_Details')}
-              </NavDropdown.Item>
-           
-            </NavDropdown>
-            </div>
-          ):null
-      
-}
-      </div>
+      {/* Right side tools */}
+      <Nav className="ms-auto align-items-center gap-3">
+        {isAuthenticated ? (
+          <div className="d-flex align-items-center gap-3">
+            {isAdmin && (
+              <div className="d-flex gap-2">
+                <NavDropdown title={t('Orders')} id="nav-dropdown-orders">
+                  <NavDropdown.Item as={Link} to="/orders">{t('Orders_List')}</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/orderByDateRep">{t('Order_By_Date')}</NavDropdown.Item>
+                </NavDropdown>
+
+                <NavDropdown title={t('Payments')} id="nav-dropdown-payments">
+                  <NavDropdown.Item as={Link} to="/payments">{t('Payments_Details')}</NavDropdown.Item>
+                </NavDropdown>
+              </div>
+            )}
+
+            <span className="navbar-text text-white text-nowrap">
+              {t("Welcome")}, {user?.firstName || user?.email}
+            </span>
+
+            <Button variant="outline-light" size="sm" onClick={handleLogout} className="text-nowrap">
+              {t("Logout")}
+            </Button>
+          </div>
+        ) : (
+          <div className="d-flex align-items-center gap-2">
+            <Nav.Link as={Link} to="/login">{t("Login_nav")}</Nav.Link>
+            <Button as={Link} to="/register" variant="primary" size="sm">
+              {t("Register")}
+            </Button>
+          </div>
+        )}
         
-   
-    <div >
-      <span className="navbar-text me-2 text-white">
-        {t("Welcome")}, {user?.firstName || user?.email}
-      </span>
-      <Button variant="outline-light" size="sm" onClick={handleLogout}>
-        {t("Logout")}
-      </Button>
-    
-    </div>
-    </div>
-  ) : (
-    <>
-      <Nav.Link as={Link} to="/login">{t("Login_nav")}</Nav.Link>
-      <Button as={Link} to="/register" variant="primary" size="sm">
-        {t("Register")}
-      </Button>
-    </>
-  )}
-  <LangSelector />
-</Nav>
-
+        {/* Language selector usually stays at the very end */}
+        <div className="border-start ps-3 ms-2 border-rtl-fix">
+          <LangSelector />
+        </div>
+      </Nav>
     </Navbar.Collapse>
-
   </Container>
 </Navbar>
   );

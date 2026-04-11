@@ -34,7 +34,7 @@ api.interceptors.request.use(
     const token = tokenService.getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      
+      console.log("🔐 Attached token to request:", token);
     }
       // ✅ Always set the language, regardless of token
     config.headers["Accept-Language"] = i18n.language;

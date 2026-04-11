@@ -1,8 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { orderApi } from './orderApi';
 
-export const fetchOrders = createAsyncThunk(
+
+export const fetchAllOrders = createAsyncThunk(
   'order/fetchAllOrders',
+  async (_, { rejectWithValue }) => {
+
+    try {
+      console.log('Fetching All Orders');
+      const result = await orderApi.fetchAllOrders();
+      console.log('All Orders Data :', result);
+      return result.data;
+    } catch (error) {
+   
+     return rejectWithValue(error.response?.data || error.message || 'Failed to fetch order');
+    }
+  }
+);
+
+export const fetchOrders = createAsyncThunk(
+  'order/fetchPagedOrders',
   async ({q,pageNumber,pageSize}, { rejectWithValue }) => {
 
     try {
@@ -68,6 +85,19 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = "some went wrong";
       
+      })
+
+       .addCase(fetchAllOrders.pending, (state) => {
+        state.loading = true;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+        state.error = null;
+
+      })  .addCase(fetchAllOrders.fulfilled, (state,action) => {
+        state.loading = false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+        state.error = null;
+        state.items = action.payload;
+      }).addCase(fetchAllOrders.rejected, (state) => {
+        state.loading = false;
+        state.error = "some went wrong";
       })
     }
     });

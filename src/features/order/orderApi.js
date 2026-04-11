@@ -1,6 +1,11 @@
 import api from '../../services/api';
  
  export const orderApi = {
+   fetchAllOrders: async () => {
+    const response = await api.get('/Order/GetAllOrders');
+    console.log(`api order data : ${response.data}`)
+    return response.data;
+  },
  fetchOrders: async ({q,pageNumber,pageSize}) => {
     const response = await api.get('/Order/GetOrders', { params: {q, pageNumber, pageSize } });
     console.log(`api order data : ${response.data}`)

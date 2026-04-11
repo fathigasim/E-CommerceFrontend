@@ -148,13 +148,13 @@ const LoginForm = () => {
               required
               autoComplete="current-password"
               />
-              <button
+              {/* <button
                 type="button"
                 className="toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? '👁️' : '👁️‍🗨️'}
-              </button>
+              </button> */}
                   <Form.Control.Feedback type="invalid">
                       {formErrors.password}
                        </Form.Control.Feedback>
