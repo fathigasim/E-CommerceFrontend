@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   PaymentElement,
@@ -11,6 +11,7 @@ import {
   selectProcessingPayment,
   setProcessingPayment,
 } from '../paymentsSlice';
+import { createOrder } from '../../order/orderSlice';
 import { toast } from 'react-toastify';
 import './CheckoutForm.css';
 
@@ -25,6 +26,8 @@ const CheckoutForm = ({ amount, currency = 'usd', customerEmail, onSuccess }) =>
 
   const [message, setMessage] = useState(null);
   const [isElementsReady, setIsElementsReady] = useState(false);
+
+           
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -20,6 +20,7 @@
       "ECommerceApp":"Shop online",
       "Register":"Register",
       "Orders_List":"Orders List",
-      "Logout":"Logout"
+      "Logout":"Logout",
+         "Order Stats":"Order Stats"
  
 }

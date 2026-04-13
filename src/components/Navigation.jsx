@@ -58,6 +58,7 @@ const Navigation = () => {
                 <NavDropdown title={t('Orders')} id="nav-dropdown-orders">
                   <NavDropdown.Item as={Link} to="/orders">{t('Orders_List')}</NavDropdown.Item>
                   <NavDropdown.Item as={Link} to="/orderByDateRep">{t('Order_By_Date')}</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/orders/charts">{t('Order Stats')}</NavDropdown.Item>
                 </NavDropdown>
 
                 <NavDropdown title={t('Payments')} id="nav-dropdown-payments">

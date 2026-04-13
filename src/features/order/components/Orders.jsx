@@ -21,7 +21,13 @@ const [localSearch, setLocalSearch] = useState(currentSearch ?? "");
   const pSize = Number(searchParams.get("pageSize")) ||8;
    
     useEffect(() => {
-        dispatch(fetchOrders({q: currentSearch, pageNumber: currentPage, pageSize: pSize }));
+      try{
+     var result=   dispatch(fetchOrders({q: currentSearch, pageNumber: currentPage, pageSize: pSize }));
+       console.log("Order search component result",result)  
+    }
+      catch(error){
+        console.log(`fetch Order component error message `,error)
+      }
     }, [dispatch,searchParams]);
 
       // Debounced search - update URL params
@@ -62,16 +68,7 @@ const [localSearch, setLocalSearch] = useState(currentSearch ?? "");
     <Container fluid="md" className="mt-4">
        
        
-        {orders.length === 0 ? (
-             <Row>
-              
-              <Col md={8} className="mx-auto">
-              
-            <p>You have no orders yet.</p>
-            </Col>
-            </Row>
-            
-        ) : (
+     
             <Row>
                 <Col md={8} className="mx-auto">
                 <h2>My Orders</h2>
@@ -84,6 +81,9 @@ const [localSearch, setLocalSearch] = useState(currentSearch ?? "");
                         onChange={(e) => setLocalSearch(e.target.value)}
                       />
                     </Col>
+                    {orders.length === 0 ? (
+                        <p>No orders found.</p>
+                    ) : (
             <ListGroup>
                 {orders.map((order) => (
                     <ListGroup.Item 
@@ -91,7 +91,7 @@ const [localSearch, setLocalSearch] = useState(currentSearch ?? "");
   className="d-flex justify-content-between"
 >
     <div className="d-flex justify-content-between w-100 mb-2">
-  <div className='gap-2'> <strong >Order: </strong><strong>{order.id.substring(1,8)}</strong></div>  
+  <div className='gap-2'> <strong >Order: </strong><strong>{order.orderNumber}</strong></div>  
   <div><strong>Total:  </strong><strong>{formatters.currency(order.totalAmount.toFixed(2))}</strong></div>
   <div><strong>Date:  </strong><strong>{new Date(order.orderDate).toLocaleDateString()}</strong></div>
     <div><strong>Status:  </strong><strong>{order.status}</strong></div>
@@ -101,10 +101,10 @@ const [localSearch, setLocalSearch] = useState(currentSearch ?? "");
 
                 ))}
             </ListGroup>
-
+                    )}
             </Col>
             </Row>
-        )}
+       
     </Container>
     {!loading && orders.length > 0 && (
         <Container fluid="md" className="mt-4 d-flex justify-content-center">

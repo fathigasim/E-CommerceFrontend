@@ -11,7 +11,7 @@ export const fetchBasket = createAsyncThunk(
       console.log('Fetching basket items');
       const result = await basketApi.fetchBasketItems();
       console.log('Basket data fetched successfully :', result);
-      return result;
+      return result.data;
     } catch (error) {
      console.error('Error details:', error.response?.data?.message );
       

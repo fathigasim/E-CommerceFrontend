@@ -19,5 +19,7 @@
      "Login_nav":" الدخول",
      "Orders_List":"قائمة الطلبات",
      "ECommerceApp":"تسوق اونلاين",
-       "Register":"تسجيل"
+       "Register":"تسجيل",
+       "Order Stats":"إحصائيات الطلبات",
+       "Logout":"تسجيل الخروج"
 }

@@ -152,16 +152,16 @@ const PaymentWrapper = ({
     };
   }, [clientSecret]);
 
-  // ✅ Payment success handler
+  // Payment success handler
  const handlePaymentSuccess = async (paymentIntent) => {
   console.log('Payment succeeded:', paymentIntent);
   toast.success('Payment successful!');
 
   try {
     // Pass paymentIntent.id to createOrder
-    const result = await dispatch(createOrder(paymentIntent.id)).unwrap();
-    console.log('Order created:', result);
-    toast.success('Order created successfully!');
+    // const result = await dispatch(createOrder(paymentIntent.id)).unwrap();
+    // console.log('Order created:', result);
+    // toast.success('Order created successfully!');
   } catch (error) {
     console.error('Order creation failed:', error);
     toast.error('Failed to create order');

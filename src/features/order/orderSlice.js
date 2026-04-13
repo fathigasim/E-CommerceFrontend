@@ -77,8 +77,7 @@ const orderSlice = createSlice({
       }).addCase(fetchOrders.fulfilled, (state, action) => {
         state.loading = false;
         state.items = action.payload.data.items;
-        state.totalPages=action.payload.data.totalPages
-        state.error=null;
+        state.totalPages=action.payload.data.totalPages;
         console.log('order data:', state.items);
       })
       .addCase(fetchOrders.rejected, (state) => {
